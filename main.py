@@ -2,14 +2,27 @@ from pyforms.basewidget import BaseWidget
 from pyforms.controls   import (
     ControlButton,
     ControlCombo,
-    ControlDir
+    ControlDir,
+    ControlList,
     )
 
 from pyforms            import settings
 import data
+from views.FileChoose import FileChoose
+
+
 class FileAnalysis(BaseWidget):
-    def __openEvent(self):
-        ...
+    def __simpleStats(self):
+        # if self._file.value == '':
+        #     self.warning("Proszę wybrać plik do analizy")
+        # elif self._outputfile.value == '':
+        #     self.warning("Proszę wybrać folder do zapisu raportów")
+        # #else:
+        win = FileChoose()
+        win.parent = self
+        win.show()
+        print('w')
+
 
     def __saveEvent(self):
         ...
@@ -26,21 +39,19 @@ class FileAnalysis(BaseWidget):
         settings.PYFORMS_STYLESHEET = 'style.css'
 
         self.mainmenu = [
-            { 'File': [
-                    {'Open': self.__openEvent},
+            { 'Analiza': [
+                    {'Wyznacz miary statystyczne': self.__simpleStats},
                     '-',
                     {'Save': self.__saveEvent},
                 ]
             },
-            { 'Edit': [
+            { 'Raport': [
                     {'Copy': self.__editEvent},
                     {'Past': self.__pastEvent}
                 ]
             }
         ]
 
-
-        #Definition of the forms fields
         self._file          = ControlCombo('Wybierz plik do analizy:')
         self._file.add_item('---', '')
         self._file.add_item('Cleveland', 'data/processed.cleveland.data')
@@ -74,8 +85,7 @@ class FileAnalysis(BaseWidget):
         print("run")
 
 
-
 if __name__ == '__main__':
 
     from pyforms import start_app
-    start_app(FileAnalysis)
+    start_app(FileAnalysis, geometry=(660,300,660,200))
