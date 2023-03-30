@@ -1,59 +1,81 @@
 from pyforms.basewidget import BaseWidget
-from pyforms.controls   import ControlFile
-from pyforms.controls   import ControlText
-from pyforms.controls   import ControlSlider
-from pyforms.controls   import ControlPlayer
-from pyforms.controls   import ControlButton
+from pyforms.controls   import (
+    ControlButton,
+    ControlCombo,
+    ControlDir
+    )
 
-class ComputerVisionAlgorithm(BaseWidget):
+from pyforms            import settings
+import data
+class FileAnalysis(BaseWidget):
+    def __openEvent(self):
+        ...
+
+    def __saveEvent(self):
+        ...
+
+    def __editEvent(self):
+        ...
+
+    def __pastEvent(self):
+        ...
 
     def __init__(self, *args, **kwargs):
-        super().__init__('Computer vision algorithm example')
+        super().__init__('Analiza danych dot. chorób serca')
 
-        #Definition of the forms fields
-        self._videofile     = ControlFile('Video')
-        self._outputfile    = ControlText('Results output file')
-        self._threshold     = ControlSlider('Threshold', default=114, minimum=0, maximum=255)
-        self._blobsize      = ControlSlider('Minimum blob size', default=110, minimum=100, maximum=2000)
-        self._player        = ControlPlayer('Player')
-        self._runbutton     = ControlButton('Run')
+        settings.PYFORMS_STYLESHEET = 'style.css'
 
-        #Define the function that will be called when a file is selected
-        self._videofile.changed_event     = self.__videoFileSelectionEvent
-        #Define the event that will be called when the run button is processed
-        self._runbutton.value       = self.__runEvent
-        #Define the event called before showing the image in the player
-        self._player.process_frame_event    = self.__process_frame
-
-        #Define the organization of the Form Controls
-        self._formset = [
-            ('_videofile', '_outputfile'),
-            '_threshold',
-            ('_blobsize', '_runbutton'),
-            '_player'
+        self.mainmenu = [
+            { 'File': [
+                    {'Open': self.__openEvent},
+                    '-',
+                    {'Save': self.__saveEvent},
+                ]
+            },
+            { 'Edit': [
+                    {'Copy': self.__editEvent},
+                    {'Past': self.__pastEvent}
+                ]
+            }
         ]
 
 
-    def __videoFileSelectionEvent(self):
-        """
-        When the videofile is selected instanciate the video in the player
-        """
-        self._player.value = self._videofile.value
+        #Definition of the forms fields
+        self._file          = ControlCombo('Wybierz plik do analizy:')
+        self._file.add_item('Cleveland', 'cl')
+        self._file.add_item('Węgry', 'hu')
+        self._file.add_item('Szwajcaria', 'sw')
+        self._file.add_item('Kalifornia', 'ca')
 
-    def __process_frame(self, frame):
+        self._outputfile    = ControlDir('Scieżka do zapisu raportu:')
+        self._runbutton     = ControlButton('Run')
+
+        #Define the function that will be called when a file is selected
+        self._file.changed_event    = self.__fileSelectionEvent
+        #Define the event that will be called when the run button is processed
+        self._runbutton.value       = self.__runEvent
+        #Define the event called before showing the image in the player
+
+        #Define the organization of the Form Controls
+        self._formset = [
+            ('_file'),
+            ('_outputfile'),
+            ('_runbutton'),
+
+        ]
+
+
+    def __fileSelectionEvent(self):
         """
-        Do some processing to the frame and return the result frame
+        When the file_file is selected instanciate the video in the player
         """
-        return frame
+        data.read(self._file.value)
 
     def __runEvent(self):
-        """
-        After setting the best parameters run the full algorithm
-        """
-        pass
+        print("run")
 
 
 if __name__ == '__main__':
 
     from pyforms import start_app
-    start_app(ComputerVisionAlgorithm)
+    start_app(FileAnalysis)

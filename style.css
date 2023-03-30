@@ -1,0 +1,35 @@
+QMainWindow{
+    background-color: white;
+    max-width: 500px;
+    max-height: 300px;
+
+    min-width: 500px;
+    min-height: 300px;
+}
+QLabel{
+    margin-left: 20px;
+    min-width: 180px;
+}
+QLineEdit{
+    border: 1px solid #CCC;
+    height: 20px;
+    padding-left: 10px;
+}
+
+QPushButton{
+    background: #3498db;
+    color: #ffffff;
+    padding: 5px 10px 5px 10px;
+    border-radius: 6px;
+    max-width: 100px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+QPushButton:hover{
+    background: #3cb0fd;
+}
+
+QComboBox{
+    width: 20px;
+}
