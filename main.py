@@ -42,10 +42,11 @@ class FileAnalysis(BaseWidget):
 
         #Definition of the forms fields
         self._file          = ControlCombo('Wybierz plik do analizy:')
-        self._file.add_item('Cleveland', 'cl')
-        self._file.add_item('Węgry', 'hu')
-        self._file.add_item('Szwajcaria', 'sw')
-        self._file.add_item('Kalifornia', 'ca')
+        self._file.add_item('---', '')
+        self._file.add_item('Cleveland', 'data/processed.cleveland.data')
+        self._file.add_item('Węgry', 'data/processed.hungarian.data')
+        self._file.add_item('Szwajcaria', 'data/processed.switzerland.data')
+        self._file.add_item('Kalifornia', 'data/processed.va.data')
 
         self._outputfile    = ControlDir('Scieżka do zapisu raportu:')
         self._runbutton     = ControlButton('Run')
@@ -66,13 +67,12 @@ class FileAnalysis(BaseWidget):
 
 
     def __fileSelectionEvent(self):
-        """
-        When the file_file is selected instanciate the video in the player
-        """
-        data.read(self._file.value)
+        if self._file.value != '':
+            data.read(self._file.value)
 
     def __runEvent(self):
         print("run")
+
 
 
 if __name__ == '__main__':
