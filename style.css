@@ -42,3 +42,6 @@ QPushButton{
 QPushButton:hover{
     background: #3cb0fd;
 }
+QList{
+    width: 600px;
+}

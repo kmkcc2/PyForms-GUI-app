@@ -1,8 +1,10 @@
 import pandas as pd
+choose = ''
 
-def read(filepath):
-    data =  pd.read_csv(filepath, sep=",", header=0)
-    return data
+def read():
+    if choose != '':
+        data =  pd.read_csv(choose, sep=",", header=0)
+        return data
 
 def min(data, column):
     pass
