@@ -12,10 +12,10 @@ import analisys.data as data
 from views.FileChoose import FileChoose
 from views.SimpleStats import SimpleStats
 from views.ViewList import ViewList
-
+from views.Corelations import Corelation
+from views.CorelationGraph import CorelationGraph
 
 class Main(BaseWidget):
-
 
     def __selectFile(self):
         win = FileChoose()
@@ -28,6 +28,14 @@ class Main(BaseWidget):
         win.parent = self
         win.show()
 
+    def __corelations(self):
+        win = Corelation()
+        win.parent = self
+        win.show()
+    def __graph(self):
+        win = CorelationGraph()
+        win.parent = self
+        win.show()
     def __viewFile(self):
         if data.choose != '':
             win = ViewList()
@@ -50,7 +58,7 @@ class Main(BaseWidget):
 
         settings.PYFORMS_STYLESHEET = 'style.css'
 
-
+        self.formset = []
         self.mainmenu = [
             {
                 'Plik': [
@@ -59,6 +67,12 @@ class Main(BaseWidget):
                 ],
                 'Analiza': [
                     {'Podstawowa statystyka': self.__simpleStats},
+                    {'Analiza korelacji': self.__corelations},
+                    {'Zależności': self.__graph},
+                    {'Klasyfikacja': self.__simpleStats},
+                ],
+                'Ekstrakcja': [
+                    {'Generuj plik csv': self.__simpleStats},
                 ]
             },
         ]

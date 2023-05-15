@@ -1,22 +1,11 @@
 import pandas as pd
-choose = ''
+choose = 'data/processed.cleveland.data' # docelowo pusty string
 
 def read():
     if choose != '':
-        data =  pd.read_csv(choose, sep=",", header=0)
+        data =  pd.read_csv(choose, sep=",", header=0, na_values='?')
         return data
 
-def min(data, column):
-    pass
-
-def max(data, column):
-    pass
-
-def mediana(data, column):
-    pass
-
-def std(data, column):
-    pass
-
-def moda(data, column):
-    pass
+def getHeaders():
+    return ['age','sex','cp','trestbps','chol','fbs','restecg',
+                                              'thalach','exang','oldpeak','slope','ca','thal','num']

@@ -3,7 +3,7 @@ from pyforms.controls   import (
     ControlButton,
     ControlCombo,
     ControlDir,
-    ControlList,
+    ControlFile,
     )
 from pyforms            import settings
 from analisys import data
@@ -16,18 +16,20 @@ class FileChoose(BaseWidget):
    #Definition of the forms fields
     def __init__(self):
         super().__init__('Analiza danych dot. chorób serca 2')
+        self.set_margin(10)
+        self.set_margin(10)
+        self.setContentsMargins(10, 10, 10, 10)
+        settings.PYFORMS_STYLESHEET = '../style.css'
 
-        settings.PYFORMS_STYLESHEET = './style.css'
 
 
-
-        self._file          = ControlCombo('Wybierz plik do analizy:')
-        self._file.add_item('---', '')
-        self._file.add_item('Cleveland', 'data/processed.cleveland.data')
-        self._file.add_item('Węgry', 'data/processed.hungarian.data')
-        self._file.add_item('Szwajcaria', 'data/processed.switzerland.data')
-        self._file.add_item('Kalifornia', 'data/processed.va.data')
-
+        # self._file          = ControlCombo('Wybierz plik do analizy:')
+        # self._file.add_item('---', '')
+        # self._file.add_item('Cleveland', 'data/processed.cleveland.data')
+        # self._file.add_item('Węgry', 'data/processed.hungarian.data')
+        # self._file.add_item('Szwajcaria', 'data/processed.switzerland.data')
+        # self._file.add_item('Kalifornia', 'data/processed.va.data')
+        self._file = ControlFile('Wybierz plik z dysku')
         self._outputfile    = ControlDir('Scieżka do zapisu raportu:')
         self._runbutton     = ControlButton('Zapisz')
 

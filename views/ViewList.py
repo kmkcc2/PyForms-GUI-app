@@ -4,6 +4,7 @@ from pyforms.controls   import (
     ControlCombo,
     ControlDir,
     ControlList,
+    ControlLabel
     )
 import settings
 from analisys import data
@@ -16,8 +17,10 @@ class ViewList(BaseWidget):
     def __init__(self):
         super().__init__('Podgląd pliku')
 
-        settings.PYFORMS_STYLESHEET = './style.css'
-
+        self.setGeometry(660,300,650,500)
+        self.set_margin(10)
+        self.set_margin(10)
+        self.setContentsMargins(10, 10, 10, 10)
 
         if data.choose != '':
             self._stats = ControlList(data.choose.split('.')[1])
@@ -26,8 +29,6 @@ class ViewList(BaseWidget):
             self._stats.horizontal_headers = ['age','sex','cp','trestbps','chol','fbs','restecg',
                                               'thalach','exang','oldpeak','slope','ca','thal','num']
             for index, row in d.iterrows():
-                roww = [row['age'], row['sex'],row['cp'], row['trestbps'], row['chol'], row['fbs'],
-                         row['restecg'], row['thalach'], row['exang'], row['oldpeak'], row['slope'], row['ca'], row['thal'], row['num']]
-                self._stats.__add__(roww)
+                self._stats.__add__(row)
                 # age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal,num
 
