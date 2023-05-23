@@ -7,7 +7,7 @@ from pyforms.controls   import (
     )
 from pyforms            import settings
 from analisys import data
-
+import os
 
 class FileChoose(BaseWidget):
     file_path = ''
@@ -49,7 +49,8 @@ class FileChoose(BaseWidget):
 
     def __runEvent(self):
         data.choose = self._file.value
-        self.save_path = self._outputfile.value
+        data.save_path = self._outputfile.value
+
         if data.choose == '':
             self.warning("Proszę wybrać plik do analizy")
         elif self._outputfile.value == '':

@@ -26,8 +26,7 @@ class ViewList(BaseWidget):
             self._stats = ControlList(data.choose.split('.')[1])
             self._stats.readonly = True
             d = data.read()
-            self._stats.horizontal_headers = ['age','sex','cp','trestbps','chol','fbs','restecg',
-                                              'thalach','exang','oldpeak','slope','ca','thal','num']
+            self._stats.horizontal_headers = data.getHeaders()
             for index, row in d.iterrows():
                 self._stats.__add__(row)
                 # age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slope,ca,thal,num

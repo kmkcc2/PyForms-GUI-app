@@ -14,6 +14,7 @@ from views.SimpleStats import SimpleStats
 from views.ViewList import ViewList
 from views.Corelations import Corelation
 from views.CorelationGraph import CorelationGraph
+from views.Subarray import Subarray
 
 class Main(BaseWidget):
 
@@ -21,8 +22,10 @@ class Main(BaseWidget):
         win = FileChoose()
         win.parent = self
         win.show()
-
-
+    def __subarray(self):
+        win = Subarray()
+        win.parent = self
+        win.show()
     def __simpleStats(self):
         win = SimpleStats()
         win.parent = self
@@ -72,7 +75,7 @@ class Main(BaseWidget):
                     {'Klasyfikacja': self.__simpleStats},
                 ],
                 'Ekstrakcja': [
-                    {'Generuj plik csv': self.__simpleStats},
+                    {'Generuj plik csv': self.__subarray},
                 ]
             },
         ]

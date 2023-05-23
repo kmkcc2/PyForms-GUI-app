@@ -42,3 +42,4 @@ class CorelationGraph(BaseWidget):
             ax.set_title('My Graph')
             plt.show()
 
+

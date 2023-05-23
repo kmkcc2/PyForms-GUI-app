@@ -42,8 +42,9 @@ class SimpleStats(BaseWidget):
 
             self._stats = ControlList('Podstawowe wartości statystyczne')
             self._stats.readonly = True
-            self._stats.horizontal_headers = ['Wartości','age','sex','cp','trestbps','chol','fbs','restecg',
-                                              'thalach','exang','oldpeak','slope','ca','thal','num']
+            headers = data.getHeaders()
+            headers.insert(0, "Wartości")
+            self._stats.horizontal_headers = headers
             self._stats.__add__(min_values)
             self._stats.__add__(max_values)
             self._stats.__add__(std_values)
