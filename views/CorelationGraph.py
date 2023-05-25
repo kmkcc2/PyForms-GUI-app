@@ -23,10 +23,13 @@ class CorelationGraph(BaseWidget):
         for item in data.getHeaders():
             self._attr2.add_item(item, item)
 
-        self._button = ControlButton('Stwórz wykres')
-        self._button.value = self.__runEvent
+        self._button_corel = ControlButton('Stwórz wykres zależności')
+        self._button_corel.value = self.__runEventCorel
 
-    def __runEvent(self):
+        self._button_hist = ControlButton('Stwórz histogram zmiennej x')
+        self._button_hist.value = self.__runEventHist
+
+    def __runEventCorel(self):
         df = data.read()
         header_x = self._attr1.value
         header_y = self._attr2.value
@@ -39,7 +42,17 @@ class CorelationGraph(BaseWidget):
             ax.plot(x, y)
             ax.set_xlabel(header_x)
             ax.set_ylabel(header_y)
-            ax.set_title('My Graph')
+            ax.set_title("Zmiana wartośći " + header_y + " w zależności od "+header_x)
             plt.show()
 
-
+    def __runEventHist(self):
+        df = data.read()
+        header_x = self._attr1.value
+        if header_x != '':
+            hist_data = df[header_x]
+            fig, ax = plt.subplots()
+            ax.hist(hist_data, bins=6, edgecolor='black')
+            ax.set_title('Histogram')
+            ax.set_xlabel('Wartość')
+            ax.set_ylabel('Częstość')
+            plt.show()
