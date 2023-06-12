@@ -39,14 +39,12 @@ class Classification(BaseWidget):
 
         # Najlepsze parametry modelu
         best_params = grid_search.best_params_
-        print("Najlepsze parametry modelu:", best_params)
 
         # Klasyfikacja na danych testowych
         y_pred = grid_search.predict(X_test)
 
         # Ocena jakości klasyfikatora
         accuracy = grid_search.score(X_test, y_test)
-        print("Dokładność klasyfikacji: {:.2f}".format(accuracy))
         return [best_params, accuracy, y_pred]
     def __init__(self):
         super(Classification, self).__init__('Statystyka')
@@ -75,7 +73,6 @@ class Classification(BaseWidget):
 
             else:
                 self.warning("Proszę wybrać liczbę z przedziału (0;1)")
-                print(float(self._test.value))
         except:
             self.warning("Proszę wybrać liczbę z przedziału (0;1)")
 

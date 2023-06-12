@@ -6,6 +6,7 @@ from pyforms.controls   import (
     ControlLabel,
     ControlText,
     ControlList,
+    ControlCombo
     )
 import settings
 from analisys import data
@@ -25,10 +26,18 @@ class Subarray(BaseWidget):
         self.set_margin(10)
         self.set_margin(10)
         self.setContentsMargins(10, 10, 10, 10)
-
         self._info = ControlLabel("Prosze podać przedziały oddzielone przecinkami np. 1-5,10-15")
         self._row_index = ControlText("Numery wierszy")
-        self._info_col = ControlLabel("Dostępne kolumny: row age sex cp trestbps chol fbs restecg thalach exang oldpeak slope ca thal num")
+        self._info_col = ControlLabel("Dostępne kolumny:")
+        headers = data.getHeaders()
+        self.option_list = ControlCombo('Wybierz kolumne')
+        self.option_list.add_item('---', 0)
+        iter = 1
+        for head in headers:
+            self.option_list.add_item(head, iter)
+            iter = iter + 1
+        self.option_list.changed_event = self.selection_changed
+
         self._col_index = ControlText("Nazwy column")
 
         d = self.load_data()
@@ -45,7 +54,27 @@ class Subarray(BaseWidget):
         self._show_button.value = self.preview
         self._save_subarray = ControlButton("Zapisz podtabelę")
         self._save_subarray.value = self.save
+        self.formset = [
+            ('_info'),
+            ('_row_index'),
+            ('_info_col'),
+            ('option_list'),
+            ('_col_index'),
+            ('_stats'),
+            ('_show_button'),
+            ('_save_subarray')
+        ]
+    def selection_changed(self):
+        wybrana_opcja = self.option_list.current_index
+        headers = data.getHeaders()
+        wybrana_opcja =  headers[wybrana_opcja - 1]
 
+        if self._col_index.value == '':
+            self._col_index.value = self._col_index.value + wybrana_opcja
+        else:
+            self._col_index.value = self._col_index.value + ', ' +wybrana_opcja
+
+        print('Wybrana opcja:', wybrana_opcja)
     def load_data(self):
         d = data.read()
         if not d.columns.__contains__("row"):
@@ -57,6 +86,7 @@ class Subarray(BaseWidget):
         text_arr_row = text_row.split(",")
         text_row_ok = True
         for ran in text_arr_row:
+            ran = ran.replace(" ", "")
             if(self.use_regex(ran.strip())):
                 pass
             else:
@@ -69,6 +99,7 @@ class Subarray(BaseWidget):
         text_col_ok = True
         picked_headers = []
         for ran in text_arr_col:
+            ran = ran.replace(" ", "")
             headers = self._stats._horizontalHeaders
             if(headers.__contains__(ran.strip())):
                 picked_headers.append(ran.strip())
@@ -80,6 +111,7 @@ class Subarray(BaseWidget):
         if text_col_ok and text_row_ok:
             rows_index = []
             for range_row in text_arr_row:
+                range_row = range_row.replace(" ", "")
                 range_row.strip()
                 rows = range_row.split("-")
                 rows_index.append(rows)
