@@ -5,6 +5,7 @@ from pyforms.controls   import (
     )
 from analisys import data
 import matplotlib.pyplot as plt
+import numpy as np
 
 class CorelationGraph(BaseWidget):
     def __init__(self):
@@ -29,12 +30,30 @@ class CorelationGraph(BaseWidget):
         self._button_hist = ControlButton('Stwórz histogram zmiennej x')
         self._button_hist.value = self.__runEventHist
 
+        self._button_scatter = ControlButton('Stwórz wykres rozkładu dwóch zmiennych')
+        self._button_scatter.value = self.generate_plot
+
+        self._combo_type = ControlCombo('Sposób przedstawienia zmiennej y')
+        self._combo_type.add_item('średnia', 0)
+        self._combo_type.add_item('mediana', 1)
+        self._combo_type.add_item('rzeczywiste', 2)
+        self._combo_type.add_item('std', 3)
     def __runEventCorel(self):
         df = data.read()
         header_x = self._attr1.value
         header_y = self._attr2.value
         if header_x != '' or header_y != '':
-            mean = df.groupby(header_x)[header_y].mean().reset_index()
+            index = self._combo_type.current_index
+            mean = ''
+            if(index == 0):
+                mean = df.groupby(header_x)[header_y].mean().reset_index()
+            elif(index == 1):
+                mean = df.groupby(header_x)[header_y].median().reset_index()
+            elif(index == 2):
+                pass
+            elif(index == 3):
+                mean = df.groupby(header_x)[header_y].std().reset_index()
+
             x = mean[header_x]
             y = mean[header_y]
 
@@ -56,3 +75,17 @@ class CorelationGraph(BaseWidget):
             ax.set_xlabel('Wartość')
             ax.set_ylabel('Częstość')
             plt.show()
+
+    def generate_plot(self):
+        header_x = self._attr1.value
+        header_y = self._attr2.value
+        df = data.read()
+        x = df[header_x]
+        y = df[header_y]
+
+        plt.scatter(x, y)
+        plt.xlabel(header_x)
+        plt.ylabel(header_y)
+        plt.title('Rozkład zmiennych ' + header_x + ' oraz ' + header_y)
+
+        plt.show()
