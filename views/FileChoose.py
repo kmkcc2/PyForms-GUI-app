@@ -11,11 +11,10 @@ import os
 
 class FileChoose(BaseWidget):
     file_path = ''
-    save_path = ''
 
    #Definition of the forms fields
     def __init__(self):
-        super().__init__('Analiza danych dot. chorób serca 2')
+        super().__init__('Analiza danych dot. chorób serca ')
         self.set_margin(10)
         self.set_margin(10)
         self.setContentsMargins(10, 10, 10, 10)
@@ -30,8 +29,12 @@ class FileChoose(BaseWidget):
         # self._file.add_item('Szwajcaria', 'data/processed.switzerland.data')
         # self._file.add_item('Kalifornia', 'data/processed.va.data')
         self._file = ControlFile('Wybierz plik z dysku')
-        self._outputfile    = ControlDir('Scieżka do zapisu raportu:')
         self._runbutton     = ControlButton('Zapisz')
+        self._nan = ControlCombo('Zastąp NaN wartością: ')
+        self._nan.add_item('domyslnie', 0)
+        self._nan.add_item('0', 1)
+        self._nan.add_item('średnia kolumny', 2)
+        self._nan.add_item('nie zastępuj', 3)
 
         # #Define the function that will be called when a file is selected
         # self._file.changed_event    = self.__fileSelectionEvent
@@ -42,18 +45,16 @@ class FileChoose(BaseWidget):
         #Define the organization of the Form Controls
         self._formset = [
             ('_file'),
-            ('_outputfile'),
+            ('_nan'),
             ('_runbutton'),
 
         ]
 
     def __runEvent(self):
         data.choose = self._file.value
-        data.save_path = self._outputfile.value
-
+        data.nan_replace = self._nan.current_index
         if data.choose == '':
             self.warning("Proszę wybrać plik do analizy")
-        elif self._outputfile.value == '':
-            self.warning("Proszę wybrać folder do zapisu raportów")
         else:
             self.close()
+

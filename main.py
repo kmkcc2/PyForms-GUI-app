@@ -24,26 +24,40 @@ class Main(BaseWidget):
         win.parent = self
         win.show()
     def __subarray(self):
-        win = Subarray()
-        win.parent = self
-        win.show()
+        if data.choose != '':
+            win = Subarray()
+            win.parent = self
+            win.show()
+        else:
+            self.warning("Proszę wybrać plik do analizy")
     def __simpleStats(self):
-        win = SimpleStats()
-        win.parent = self
-        win.show()
+        if data.choose != '':
+            win = SimpleStats()
+            win.parent = self
+            win.show()
+        else:
+            self.warning("Proszę wybrać plik do analizy")
     def __classification(self):
-        win = Classification()
-        win.parent = self
-        win.show()
-
+        if data.choose != '':
+            win = Classification()
+            win.parent = self
+            win.show()
+        else:
+            self.warning("Proszę wybrać plik do analizy")
     def __corelations(self):
-        win = Corelation()
-        win.parent = self
-        win.show()
+        if data.choose != '':
+            win = Corelation()
+            win.parent = self
+            win.show()
+        else:
+            self.warning("Proszę wybrać plik do analizy")
     def __graph(self):
-        win = CorelationGraph()
-        win.parent = self
-        win.show()
+        if data.choose != '':
+            win = CorelationGraph()
+            win.parent = self
+            win.show()
+        else:
+            self.warning("Proszę wybrać plik do analizy")
     def __viewFile(self):
         if data.choose != '':
             win = ViewList()

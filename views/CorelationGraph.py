@@ -41,7 +41,7 @@ class CorelationGraph(BaseWidget):
         df = data.read()
         header_x = self._attr1.value
         header_y = self._attr2.value
-        if header_x != '' or header_y != '':
+        if header_x != '' and header_y != '':
             index = self._combo_type.current_index
             mean = ''
             if(index == 0):
@@ -76,13 +76,15 @@ class CorelationGraph(BaseWidget):
     def generate_plot(self):
         header_x = self._attr1.value
         header_y = self._attr2.value
-        df = data.read()
-        x = df[header_x]
-        y = df[header_y]
+        if header_x != '' and header_y != '':
 
-        plt.scatter(x, y)
-        plt.xlabel(header_x)
-        plt.ylabel(header_y)
-        plt.title('Rozkład zmiennych ' + header_x + ' oraz ' + header_y)
+            df = data.read()
+            x = df[header_x]
+            y = df[header_y]
 
-        plt.show()
+            plt.scatter(x, y)
+            plt.xlabel(header_x)
+            plt.ylabel(header_y)
+            plt.title('Rozkład zmiennych ' + header_x + ' oraz ' + header_y)
+
+            plt.show()

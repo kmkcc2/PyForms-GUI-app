@@ -6,7 +6,8 @@ from pyforms.controls   import (
     ControlLabel,
     ControlText,
     ControlList,
-    ControlCombo
+    ControlCombo,
+    ControlDir
     )
 import settings
 from analisys import data
@@ -15,6 +16,7 @@ import re
 import pandas as pd
 import csv
 import os
+from PyQt5.QtWidgets import QFileDialog
 
 class Subarray(BaseWidget):
 
@@ -28,9 +30,8 @@ class Subarray(BaseWidget):
         self.setContentsMargins(10, 10, 10, 10)
         self._info = ControlLabel("Prosze podać przedziały oddzielone przecinkami np. 1-5,10-15")
         self._row_index = ControlText("Numery wierszy")
-        self._info_col = ControlLabel("Dostępne kolumny:")
         headers = data.getHeaders()
-        self.option_list = ControlCombo('Wybierz kolumne')
+        self.option_list = ControlCombo('Dodaj kolumnę')
         self.option_list.add_item('---', 0)
         iter = 1
         for head in headers:
@@ -50,14 +51,13 @@ class Subarray(BaseWidget):
             self._stats.horizontal_headers = headers
             for index, row in d.iterrows():
                 self._stats.__add__(row)
-        self._show_button = ControlButton("Podgląd podtabeli")
+        self._show_button = ControlButton("Utwórz podtabelę")
         self._show_button.value = self.preview
         self._save_subarray = ControlButton("Zapisz podtabelę")
         self._save_subarray.value = self.save
         self.formset = [
             ('_info'),
             ('_row_index'),
-            ('_info_col'),
             ('option_list'),
             ('_col_index'),
             ('_stats'),
@@ -138,11 +138,14 @@ class Subarray(BaseWidget):
             filtered = []
 
     def save(self):
-        if os.path.exists(data.save_path + '/dataframe.csv'):
-                # Usuwanie pliku
-                os.remove(data.save_path + '/dataframe.csv')
+        folder_path = QFileDialog.getSaveFileName(None, 'Wybierz ścieżkę', 'dataframe.csv')
+        folder_path = str(folder_path[0])
 
-        with open(data.getSavePath() + '/dataframe.csv', 'w', newline='') as file:
+        if os.path.exists(folder_path):
+                # Usuwanie pliku
+                os.remove(folder_path)
+
+        with open(folder_path, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(self._stats.horizontal_headers)
             for row in self._stats.value:
