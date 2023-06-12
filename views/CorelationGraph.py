@@ -36,8 +36,7 @@ class CorelationGraph(BaseWidget):
         self._combo_type = ControlCombo('Sposób przedstawienia zmiennej y')
         self._combo_type.add_item('średnia', 0)
         self._combo_type.add_item('mediana', 1)
-        self._combo_type.add_item('rzeczywiste', 2)
-        self._combo_type.add_item('std', 3)
+        self._combo_type.add_item('std', 2)
     def __runEventCorel(self):
         df = data.read()
         header_x = self._attr1.value
@@ -50,8 +49,6 @@ class CorelationGraph(BaseWidget):
             elif(index == 1):
                 mean = df.groupby(header_x)[header_y].median().reset_index()
             elif(index == 2):
-                pass
-            elif(index == 3):
                 mean = df.groupby(header_x)[header_y].std().reset_index()
 
             x = mean[header_x]
